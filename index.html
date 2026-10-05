@@ -1,0 +1,444 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Suleman Elahi</title>
+<meta name="description" content="Suleman Elahi, Backend and Full Stack Engineer building fintech, serverless and SaaS systems with Node.js, NestJS and AWS.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a single reading column styled like an engineer's ledger — hero with a live webhook log, then dated entries and project cards. */
+:root{
+  --bg:#f5f6f8; --surface:#ffffff; --ink:#141a26; --muted:#5a6375; --line:#dde1e8;
+  --accent:#1f4fd1; --accent-soft:#e6ecfb; --ok:#11804f; --warn:#b26a00;
+  --code-bg:#0f1522; --code-fg:#d6deeb; --code-dim:#7a879c;
+  --f-display:"Schibsted Grotesk",ui-sans-serif,system-ui,sans-serif;
+  --f-body:"IBM Plex Sans",ui-sans-serif,system-ui,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0c111b; --surface:#131a27; --ink:#e7ebf2; --muted:#98a2b5; --line:#243045;
+  --accent:#7d9cff; --accent-soft:#1a2645; --ok:#4fd197; --warn:#f0b04a;
+  --code-bg:#070b13; --code-fg:#d6deeb; --code-dim:#6b7890; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0c111b; --surface:#131a27; --ink:#e7ebf2; --muted:#98a2b5; --line:#243045;
+  --accent:#7d9cff; --accent-soft:#1a2645; --ok:#4fd197; --warn:#f0b04a;
+  --code-bg:#070b13; --code-fg:#d6deeb; --code-dim:#6b7890; color-scheme:dark}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.6;margin:0;padding-inline:20px}
+a{color:var(--accent);text-underline-offset:3px}
+a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
+.wrap{max-width:1080px;margin-inline:auto}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.15}
+.mono{font-family:var(--f-mono)}
+.label{font-family:var(--f-mono);font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+
+/* nav */
+nav.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);margin-inline:-20px;padding-inline:20px}
+nav.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:12px}
+.brand{font-family:var(--f-display);font-weight:800;color:var(--ink);text-decoration:none;font-size:1.05rem}
+.brand span{color:var(--accent)}
+nav.top ul{display:flex;gap:20px;list-style:none;margin:0;padding:0;flex-wrap:wrap}
+nav.top ul a{color:var(--muted);text-decoration:none;font-size:.9rem}
+nav.top ul a:hover{color:var(--ink)}
+@media (max-width:640px){nav.top ul{display:none}}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:center;padding-block:64px 48px}
+.hero>*{min-width:0}
+.avail{display:inline-flex;align-items:center;gap:8px;font-family:var(--f-mono);font-size:.8rem;color:var(--ok);border:1px solid var(--line);background:var(--surface);padding:4px 10px;border-radius:999px}
+.avail::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--ok)}
+.hero h1{font-size:clamp(2.6rem,6vw,4.2rem);font-weight:800;letter-spacing:-.02em;margin-top:18px}
+.hero .role{font-family:var(--f-display);font-weight:500;font-size:clamp(1.15rem,2.2vw,1.45rem);color:var(--muted);margin-top:8px}
+.hero .role b{color:var(--ink);font-weight:700}
+.hero p.lede{max-width:56ch;margin:20px 0 0;color:var(--ink)}
+.cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+.btn{display:inline-flex;align-items:center;gap:8px;font:600 .95rem var(--f-body);padding:10px 18px;border-radius:8px;text-decoration:none;border:1px solid var(--line);color:var(--ink);background:var(--surface);cursor:pointer}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--surface)}
+.btn:hover{transform:translateY(-1px)}
+
+/* webhook log */
+.log{background:var(--code-bg);color:var(--code-fg);font-family:var(--f-mono);font-size:.78rem;line-height:1.7;border-radius:12px;padding:16px 18px;box-shadow:0 20px 40px -24px rgba(10,20,40,.55);overflow-x:auto}
+.log .bar{display:flex;gap:6px;margin-bottom:12px}
+.log .bar i{width:10px;height:10px;border-radius:50%;background:#2a3346}
+.log .bar em{margin-left:auto;font-style:normal;color:var(--code-dim)}
+.log .row{white-space:nowrap}
+.log .t{color:var(--code-dim)}
+.log .m{color:#82aaff}
+.log .s2{color:#7fdba4}
+.log .s4{color:#ffcb6b}
+.log .k{color:#c792ea}
+.log .row{opacity:1;animation:in .5s ease both}
+.log .row:nth-child(3){animation-delay:.15s}.log .row:nth-child(4){animation-delay:.3s}.log .row:nth-child(5){animation-delay:.45s}.log .row:nth-child(6){animation-delay:.6s}.log .row:nth-child(7){animation-delay:.75s}.log .row:nth-child(8){animation-delay:.9s}
+@keyframes in{from{opacity:.25;transform:translateX(-4px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.log .row{animation:none}.btn:hover{transform:none}html{scroll-behavior:auto}}
+
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+.stat{padding:20px 22px;border-left:1px solid var(--line)}
+.stat:first-child{border-left:0}
+.stat b{display:block;font-family:var(--f-display);font-size:2rem;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.stat span{color:var(--muted);font-size:.88rem}
+@media (max-width:820px){.hero{grid-template-columns:1fr;gap:32px;padding-block:40px 32px}.stats{grid-template-columns:repeat(2,1fr)}.stat:nth-child(3){border-left:0}.stat:nth-child(n+3){border-top:1px solid var(--line)}}
+
+section.block{padding-block:72px 8px}
+.sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:28px}
+.sec-head h2{font-size:clamp(1.7rem,3.4vw,2.3rem);font-weight:800;letter-spacing:-.01em}
+.sec-head p{color:var(--muted);margin:0;max-width:52ch}
+
+/* experience */
+.job{display:grid;grid-template-columns:200px 1fr;gap:32px;padding-block:28px;border-top:1px solid var(--line)}
+.job>*{min-width:0}
+.job .when{font-family:var(--f-mono);font-size:.82rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.job .when b{display:block;color:var(--ink);font-weight:500;font-size:.9rem;margin-bottom:4px}
+.job h3{font-size:1.3rem;font-weight:700}
+.job .org{color:var(--accent);font-weight:600;margin-top:2px}
+.job .ladder{font-family:var(--f-mono);font-size:.78rem;color:var(--muted);margin-top:6px}
+.job ul{margin:14px 0 0;padding-left:1.1em;max-width:70ch}
+.job li{margin-bottom:6px}
+.job li::marker{color:var(--accent)}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px;padding:0;list-style:none}
+.tags li{font-family:var(--f-mono);font-size:.74rem;padding:3px 8px;border-radius:5px;background:var(--accent-soft);color:var(--ink);margin:0}
+@media (max-width:720px){.job{grid-template-columns:1fr;gap:10px}}
+
+/* projects */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px}
+.proj{background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden;display:flex;flex-direction:column}
+.proj .shot{aspect-ratio:16/8;max-width:100%;background:var(--accent-soft);display:block;position:relative;overflow:hidden;border-bottom:1px solid var(--line)}
+.proj .shot svg{width:100%;height:100%;display:block}
+.proj .shot img{width:100%;height:100%;object-fit:cover;display:block}
+.proj .body{padding:18px 20px 20px;display:flex;flex-direction:column;gap:8px;flex:1}
+.proj .meta{display:flex;justify-content:space-between;gap:8px}
+.proj h3{font-size:1.15rem;font-weight:700}
+.proj p{margin:0;color:var(--muted);font-size:.95rem}
+.proj .tags{margin-top:auto;padding-top:10px}
+.proj.feature{grid-column:1/-1;flex-direction:row}
+.proj.feature .shot{aspect-ratio:auto;flex:0 0 44%;border-bottom:0;border-right:1px solid var(--line);min-height:260px}
+.proj.feature .body{padding:26px 28px}
+.proj.feature h3{font-size:1.5rem}
+.subs{display:grid;gap:10px;margin:8px 0 0;padding:0;list-style:none}
+.subs li{font-size:.92rem;color:var(--muted)}
+.subs b{color:var(--ink);font-family:var(--f-mono);font-size:.8rem;font-weight:500;background:var(--accent-soft);padding:1px 6px;border-radius:4px;margin-right:6px}
+.rails{font-family:var(--f-mono);font-size:.75rem;color:var(--muted)}
+@media (max-width:820px){.proj.feature{flex-direction:column}.proj.feature .shot{flex:none;aspect-ratio:16/8;min-height:0;border-right:0;border-bottom:1px solid var(--line)}}
+
+/* skills */
+.skills{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:28px 32px}
+.skills h3{font-size:1rem;font-weight:700;margin-bottom:10px}
+.skills .tags{margin-top:0}
+
+/* edu + contact */
+.edu{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-block:22px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.edu h3{font-size:1.15rem}
+.edu p{margin:2px 0 0;color:var(--muted)}
+.contact{background:var(--code-bg);color:var(--code-fg);border-radius:16px;padding:40px;display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-block:72px 40px}
+.contact>*{min-width:0}
+.contact h2{font-size:clamp(1.7rem,3.4vw,2.4rem);font-weight:800;color:var(--code-fg)}
+.contact p{color:var(--code-dim);margin:12px 0 0;max-width:44ch}
+.chan{display:grid;gap:10px;margin:0;padding:0;list-style:none}
+.chan li{display:flex;align-items:center;justify-content:space-between;gap:12px;border:1px solid #243045;border-radius:8px;padding:10px 14px;flex-wrap:wrap}
+.chan .k{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--code-dim)}
+.chan .v{font-family:var(--f-mono);font-size:.9rem;color:var(--code-fg);user-select:all;word-break:break-all}
+.chan a.v{text-decoration:none;color:#9db4ff}
+.copy{font:500 .75rem var(--f-mono);background:transparent;color:var(--code-fg);border:1px solid #33405a;border-radius:6px;padding:4px 8px;cursor:pointer}
+@media (max-width:720px){.contact{grid-template-columns:1fr;padding:28px 22px}}
+footer{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:.85rem;padding-block:0 40px}
+</style>
+</head>
+<body>
+
+
+<nav class="top"><div class="wrap">
+  <a class="brand" href="#top">suleman<span>.</span>elahi</a>
+  <ul>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#work">Work</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</div></nav>
+
+<main class="wrap" id="top">
+  <header class="hero">
+    <div>
+      <span class="avail">Open to backend and full stack roles</span>
+      <h1>Suleman Elahi</h1>
+      <div class="role"><b>Backend / Full Stack Engineer</b> · Node.js, NestJS, AWS</div>
+      <p class="lede">I build the parts of a product that have to be right: payments, ledgers, onboarding and the APIs that connect them. Five years across fintech, cloud migration and product delivery for clients in the UK, US and Canada. Right now I'm engineering core banking and white-label API services for an FCA-authorised UK e-money institution.</p>
+      <div class="cta">
+        <a class="btn primary" href="#contact">Get in touch</a>
+        <a class="btn" href="https://www.upwork.com/freelancers/~013fbdae8696f688e8" target="_blank" rel="noopener">Hire on Upwork</a>
+        <a class="btn" href="https://linkedin.com/in/sulemane" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+    </div>
+    <div class="log" aria-label="Illustrative webhook delivery log">
+      <div class="bar"><i></i><i></i><i></i><em>webhooks · outbound</em></div>
+      <div class="row"><span class="t">12:04:01.218</span> <span class="m">POST</span> /payments/faster-payments</div>
+      <div class="row"><span class="t">12:04:01.240</span> <span class="k">ledger</span> debit  GBP 1,250.00 → posted</div>
+      <div class="row"><span class="t">12:04:01.241</span> <span class="k">ledger</span> credit GBP 1,250.00 → posted</div>
+      <div class="row"><span class="t">12:04:01.302</span> <span class="k">sign</span>   x-signature: sha256=9f2c…e1a</div>
+      <div class="row"><span class="t">12:04:01.488</span> <span class="m">→</span> client-07 <span class="s4">503</span> retry in 2s</div>
+      <div class="row"><span class="t">12:04:03.511</span> <span class="m">→</span> client-07 <span class="s2">200 OK</span> idempotency-key reused</div>
+      <div class="row"><span class="t">12:04:03.512</span> <span class="k">recon</span>  balanced ✓</div>
+    </div>
+  </header>
+
+  <div class="stats">
+    <div class="stat"><b>5 yrs</b><span>shipping production backends</span></div>
+    <div class="stat"><b>12+</b><span>services migrated to AWS serverless</span></div>
+    <div class="stat"><b>500+</b><span>businesses served by those services</span></div>
+    <div class="stat"><b>99.95%</b><span>uptime after the migration</span></div>
+  </div>
+
+  <section class="block" id="experience">
+    <div class="sec-head">
+      <h2>Experience</h2>
+      <p>From MERN product work to leading a backend team, and now core banking.</p>
+    </div>
+
+    <article class="job">
+      <div class="when"><b>Feb 2026 – Present</b>Remote (hybrid option)</div>
+      <div>
+        <h3>Senior Backend Engineer, Core Banking</h3>
+        <div class="org">3dCodes Pvt Ltd · for Frontier Pay (UK)</div>
+        <ul>
+          <li>Engineer secure backend services for Frontier Pay, an FCA-authorised UK Electronic Money Institution.</li>
+          <li>Own the webhook layer in both directions: consuming bank partner responses and notifying white-label clients on every banking event, with signature verification, idempotent processing and automatic retries.</li>
+          <li>Build and maintain white-label APIs used by 10+ client businesses running accounts and payments on the platform.</li>
+          <li>Own money movement logic across payments, ledger postings and account management, including daily reconciliation backed by tuned SQL.</li>
+          <li>Turn regulatory and business requirements into technical specs with the UK team.</li>
+        </ul>
+        <ul class="tags"><li>NestJS</li><li>TypeScript</li><li>PostgreSQL</li><li>GraphQL</li><li>Hasura</li><li>Webhooks</li><li>AWS Cognito</li><li>Supabase</li><li>UK Bank APIs</li></ul>
+      </div>
+    </article>
+
+    <article class="job">
+      <div class="when"><b>Oct 2022 – Feb 2026</b>Islamabad · onsite</div>
+      <div>
+        <h3>Senior Software Engineer II (Node.js / Backend)</h3>
+        <div class="org">SMSAMI</div>
+        <div class="ladder">Junior → Intermediate → Senior I → Senior II</div>
+        <ul>
+          <li>Led a team of 6 backend developers: code reviews, task delegation and delivery quality.</li>
+          <li>Led the migration of a legacy PHP (Yii) monolith to serverless microservices on AWS, serving 500+ businesses at 99.95% uptime.</li>
+          <li>Built and maintained 12+ production microservices (Invoices, Catalog, Task Management and more) on Node.js and Lambda.</li>
+          <li>Designed DynamoDB data models and access patterns, with schema versioning through Dynamoose.</li>
+          <li>Introduced event-driven workflows with SQS and EventBridge, and unit testing with Jest.</li>
+        </ul>
+        <ul class="tags"><li>AWS Lambda</li><li>API Gateway</li><li>DynamoDB</li><li>SQS</li><li>EventBridge</li><li>AWS SAM</li><li>Jest</li><li>Docker</li></ul>
+      </div>
+    </article>
+
+    <article class="job">
+      <div class="when"><b>Oct 2021 – Oct 2022</b>Islamabad · onsite</div>
+      <div>
+        <h3>MERN Stack Engineer</h3>
+        <div class="org">Geekinate</div>
+        <ul>
+          <li>Delivered the MVP of a coworking-space management platform for a US client, end to end, as a core team member.</li>
+          <li>Introduced Redux Toolkit and React Query for state management and caching.</li>
+          <li>Set up CI/CD with GitHub Actions and migrated the company site to Next.js with Ghost CMS.</li>
+        </ul>
+        <ul class="tags"><li>React.js</li><li>Next.js</li><li>Node.js</li><li>Express</li><li>MongoDB Atlas</li><li>GitHub Actions</li></ul>
+      </div>
+    </article>
+  </section>
+
+  <section class="block" id="work">
+    <div class="sec-head">
+      <h2>Selected work</h2>
+      <p>Products I've built or helped build, from UK banking to flight-school operations.</p>
+    </div>
+
+    <div class="grid">
+      <article class="proj feature">
+        <div class="shot" aria-hidden="true">
+          <svg viewBox="0 0 400 260" preserveAspectRatio="xMidYMid slice">
+            <rect width="400" height="260" style="fill:var(--accent-soft)"/>
+            <g font-family="JetBrains Mono, monospace" font-size="11" style="fill:var(--ink)">
+              <rect x="150" y="100" width="100" height="56" rx="8" style="fill:var(--accent)"/>
+              <text x="200" y="125" text-anchor="middle" font-weight="600" style="fill:var(--surface)">CBS</text>
+              <text x="200" y="142" text-anchor="middle" font-size="9" style="fill:var(--surface)">ledger · accounts</text>
+              <rect x="30" y="30" width="90" height="40" rx="6" style="fill:var(--surface);stroke:var(--line)"/><text x="75" y="54" text-anchor="middle">COBS · KYC</text>
+              <rect x="280" y="30" width="90" height="40" rx="6" style="fill:var(--surface);stroke:var(--line)"/><text x="325" y="54" text-anchor="middle">TMS · AML</text>
+              <rect x="30" y="190" width="90" height="40" rx="6" style="fill:var(--surface);stroke:var(--line)"/><text x="75" y="214" text-anchor="middle">Bank APIs</text>
+              <rect x="280" y="190" width="90" height="40" rx="6" style="fill:var(--surface);stroke:var(--line)"/><text x="325" y="214" text-anchor="middle">Clients ×10+</text>
+              <g stroke-width="1.5" fill="none" stroke-dasharray="4 4" style="stroke:var(--accent)">
+                <path d="M120 50 L150 112"/><path d="M280 50 L250 112"/><path d="M120 210 L150 146"/><path d="M280 210 L250 146"/>
+              </g>
+              <text x="200" y="250" text-anchor="middle" font-size="9" style="fill:var(--muted)">BACS · CHAPS · FPS · SEPA · SWIFT</text>
+            </g>
+          </svg>
+        </div>
+        <div class="body">
+          <div class="meta"><span class="label">Fintech · 2026</span><span class="label">3dCodes</span></div>
+          <h3>Frontier Pay</h3>
+          <p>A UK digital money platform for individuals and businesses: multi-currency accounts, FX, cards, and web and mobile banking. I work on the backend systems behind it.</p>
+          <ul class="subs">
+            <li><b>CBS</b>White-label core banking engine for accounts, transaction processing, compliance reporting and integrations.</li>
+            <li><b>COBS</b>Digital KYC and AML onboarding with document handling, risk screening and automated approvals.</li>
+            <li><b>TMS</b>AML transaction monitoring with rule-based detection, risk scoring, sanctions screening and case management.</li>
+          </ul>
+          <ul class="tags"><li>NestJS</li><li>PostgreSQL</li><li>GraphQL</li><li>Hasura</li><li>Webhooks</li></ul>
+        </div>
+      </article>
+
+      <article class="proj">
+        <div class="shot" aria-hidden="true">
+          <svg viewBox="0 0 400 200" preserveAspectRatio="xMidYMid slice">
+            <rect width="400" height="200" style="fill:var(--accent-soft)"/>
+            <rect x="110" y="30" width="180" height="140" rx="8" style="fill:var(--surface);stroke:var(--line)"/>
+            <g font-family="JetBrains Mono, monospace" font-size="10" style="fill:var(--ink)">
+              <text x="126" y="54" font-weight="600">RECEIPT #10482</text>
+              <text x="126" y="80">Paracetamol 500mg</text><text x="274" y="80" text-anchor="end">120</text>
+              <text x="126" y="98">Chai, large</text><text x="274" y="98" text-anchor="end">250</text>
+              <text x="126" y="116">Notebook A5</text><text x="274" y="116" text-anchor="end">180</text>
+              <line x1="126" y1="128" x2="274" y2="128" style="stroke:var(--line)"/>
+              <text x="126" y="150" font-weight="600">TOTAL PKR</text><text x="274" y="150" text-anchor="end" font-weight="600" style="fill:var(--accent)">550</text>
+            </g>
+          </svg>
+        </div>
+        <div class="body">
+          <div class="meta"><span class="label">Retail POS · SMSAMI</span></div>
+          <h3>E-RetailPoint</h3>
+          <p>Cloud POS and management platform for retail stores, restaurants and pharmacies across Pakistan, covering inventory, sales and reporting. Moved from a PHP monolith to serverless microservices.</p>
+          <ul class="tags"><li>Lambda</li><li>DynamoDB</li><li>SQS</li><li>EventBridge</li></ul>
+        </div>
+      </article>
+
+      <article class="proj">
+        <div class="shot" aria-hidden="true">
+          <svg viewBox="0 0 400 200" preserveAspectRatio="xMidYMid slice">
+            <rect width="400" height="200" style="fill:var(--accent-soft)"/>
+            <g font-family="JetBrains Mono, monospace" font-size="9" style="fill:var(--muted)">
+              <text x="40" y="40">C-GKXA</text><text x="40" y="80">C-FLYH</text><text x="40" y="120">N172SP</text><text x="40" y="160">N8841W</text>
+            </g>
+            <g style="stroke:var(--line)"><line x1="100" y1="20" x2="100" y2="180"/><line x1="180" y1="20" x2="180" y2="180"/><line x1="260" y1="20" x2="260" y2="180"/><line x1="340" y1="20" x2="340" y2="180"/></g>
+            <rect x="108" y="30" width="110" height="16" rx="4" style="fill:var(--accent)"/>
+            <rect x="200" y="70" width="90" height="16" rx="4" opacity=".7" style="fill:var(--accent)"/>
+            <rect x="130" y="110" width="150" height="16" rx="4" opacity=".5" style="fill:var(--accent)"/>
+            <rect x="270" y="150" width="80" height="16" rx="4" opacity=".8" style="fill:var(--accent)"/>
+          </svg>
+        </div>
+        <div class="body">
+          <div class="meta"><span class="label">Aviation MIS · SMSAMI</span></div>
+          <h3>Flyaway Hub</h3>
+          <p>Cloud aviation MIS for flight schools in Canada and the US, handling aircraft scheduling, student tracking and resource management.</p>
+          <ul class="tags"><li>Node.js</li><li>Lambda</li><li>DynamoDB</li><li>Cognito</li></ul>
+        </div>
+      </article>
+
+      <article class="proj">
+        <div class="shot" aria-hidden="true">
+          <svg viewBox="0 0 400 200" preserveAspectRatio="xMidYMid slice">
+            <rect width="400" height="200" style="fill:var(--accent-soft)"/>
+            <g style="stroke:var(--line)"><line x1="30" y1="50" x2="370" y2="50"/><line x1="30" y1="100" x2="370" y2="100"/><line x1="30" y1="150" x2="370" y2="150"/></g>
+            <path d="M30 140 L80 128 L120 134 L160 100 L200 108 L240 80 L280 90 L320 56 L370 64 L370 170 L30 170 Z" opacity=".15" style="fill:var(--accent)"/>
+            <path d="M30 140 L80 128 L120 134 L160 100 L200 108 L240 80 L280 90 L320 56 L370 64" fill="none" stroke-width="2.5" style="stroke:var(--accent)"/>
+            <circle cx="370" cy="64" r="4.5" style="fill:var(--accent)"/>
+          </svg>
+        </div>
+        <div class="body">
+          <div class="meta"><span class="label">Investing · Geekinate</span></div>
+          <h3>FINCO</h3>
+          <p>MERN investment platform with real-time chat, video calls and live stock data from the Yahoo Finance APIs.</p>
+          <ul class="tags"><li>React</li><li>Node.js</li><li>MongoDB</li><li>WebSockets</li></ul>
+        </div>
+      </article>
+
+      <article class="proj">
+        <div class="shot" aria-hidden="true">
+          <svg viewBox="0 0 400 200" preserveAspectRatio="xMidYMid slice">
+            <rect width="400" height="200" style="fill:var(--accent-soft)"/>
+            <g style="fill:var(--surface);stroke:var(--line)">
+              <rect x="60" y="40" width="80" height="50" rx="6"/><rect x="160" y="40" width="80" height="50" rx="6"/><rect x="260" y="40" width="80" height="50" rx="6"/>
+              <rect x="60" y="110" width="130" height="50" rx="6"/><rect x="210" y="110" width="130" height="50" rx="6"/>
+            </g>
+            <rect x="160" y="40" width="80" height="50" rx="6" style="fill:var(--accent)"/>
+            <rect x="210" y="110" width="130" height="50" rx="6" opacity=".55" style="fill:var(--accent)"/>
+            <g font-family="JetBrains Mono, monospace" font-size="9" style="fill:var(--muted)"><text x="70" y="70">Desk A1</text><text x="270" y="70">Desk A3</text><text x="70" y="140">Meeting room</text></g>
+            <g font-family="JetBrains Mono, monospace" font-size="9" style="fill:var(--surface)"><text x="170" y="70">Booked</text><text x="220" y="140">Phone booth</text></g>
+          </svg>
+        </div>
+        <div class="body">
+          <div class="meta"><span class="label">SaaS MVP · Geekinate</span></div>
+          <h3>Coworking Platform</h3>
+          <p>Full stack MVP of a coworking-space management system for a US client, delivered end to end from research to launch.</p>
+          <ul class="tags"><li>React</li><li>Redux Toolkit</li><li>React Query</li><li>Express</li></ul>
+        </div>
+      </article>
+
+      <article class="proj">
+        <div class="shot" aria-hidden="true">
+          <svg viewBox="0 0 400 200" preserveAspectRatio="xMidYMid slice">
+            <rect width="400" height="200" style="fill:var(--accent-soft)"/>
+            <rect x="60" y="30" width="280" height="140" rx="8" style="fill:var(--surface);stroke:var(--line)"/>
+            <rect x="60" y="30" width="280" height="22" rx="8" style="fill:var(--line)"/>
+            <rect x="80" y="70" width="140" height="14" rx="3" style="fill:var(--ink)"/>
+            <rect x="80" y="94" width="220" height="6" rx="3" style="fill:var(--line)"/><rect x="80" y="108" width="190" height="6" rx="3" style="fill:var(--line)"/>
+            <rect x="80" y="130" width="80" height="22" rx="5" style="fill:var(--accent)"/>
+          </svg>
+        </div>
+        <div class="body">
+          <div class="meta"><span class="label">Web · Geekinate</span></div>
+          <h3>Geekinate Website</h3>
+          <p>Company site rebuilt on Next.js with Ghost CMS as a headless content backend, deployed through GitHub Actions.</p>
+          <ul class="tags"><li>Next.js</li><li>Ghost CMS</li><li>GitHub Actions</li></ul>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="block" id="skills">
+    <div class="sec-head"><h2>Skills</h2><p>The tools I reach for, grouped by where they sit in the stack.</p></div>
+    <div class="skills">
+      <div><h3>Backend</h3><ul class="tags"><li>TypeScript</li><li>Node.js</li><li>NestJS</li><li>Express.js</li><li>REST APIs</li><li>GraphQL</li><li>Hasura</li><li>Webhooks</li></ul></div>
+      <div><h3>Frontend</h3><ul class="tags"><li>React.js</li><li>Next.js</li><li>Redux Toolkit</li><li>React Query</li><li>Material UI</li></ul></div>
+      <div><h3>Databases</h3><ul class="tags"><li>PostgreSQL</li><li>SQL</li><li>DynamoDB</li><li>MongoDB</li><li>Supabase</li></ul></div>
+      <div><h3>Cloud &amp; DevOps</h3><ul class="tags"><li>AWS Lambda</li><li>API Gateway</li><li>SQS</li><li>EventBridge</li><li>S3</li><li>Cognito</li><li>AWS SAM</li><li>Docker</li><li>GitHub Actions</li></ul></div>
+      <div><h3>Practices</h3><ul class="tags"><li>Microservices</li><li>Event-driven architecture</li><li>Jest</li><li>Git</li><li>Agile / Scrum</li></ul></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="sec-head"><h2>Education</h2></div>
+    <div class="edu">
+      <div><h3>B.E. Computer Software Engineering</h3><p>University of Science &amp; Technology</p></div>
+      <div class="mono" style="color:var(--muted);font-size:.85rem">Aug 2017 – Aug 2021</div>
+    </div>
+  </section>
+
+  <section class="contact" id="contact">
+    <div>
+      <span class="label" style="color:var(--code-dim)">Contact</span>
+      <h2 style="margin-top:8px">Have a backend that needs to be right?</h2>
+      <p>I'm open to backend and full stack roles and freelance projects. Based in Islamabad, working with teams in the UK, US and Canada.</p>
+    </div>
+    <ul class="chan">
+      <li><div><div class="k">Email</div><span class="v" id="em">sulemane010@gmail.com</span></div><button class="copy" type="button" data-copy="em">Copy</button></li>
+      <li><div><div class="k">Phone / WhatsApp</div><span class="v" id="ph">+92 332 5151178</span></div><button class="copy" type="button" data-copy="ph">Copy</button></li>
+      <li><div><div class="k">LinkedIn</div><a class="v" href="https://linkedin.com/in/sulemane" target="_blank" rel="noopener">linkedin.com/in/sulemane</a></div></li>
+      <li><div><div class="k">Upwork</div><a class="v" href="https://www.upwork.com/freelancers/~013fbdae8696f688e8" target="_blank" rel="noopener">upwork.com/freelancers/~013fbdae…</a></div></li>
+    </ul>
+  </section>
+
+  <footer><span>© 2026 Suleman Elahi</span><span class="mono">Islamabad, Pakistan · UTC+5</span></footer>
+</main>
+
+<script>
+document.querySelectorAll('.copy').forEach(function(b){
+  b.addEventListener('click',function(){
+    var el=document.getElementById(b.dataset.copy), txt=el.textContent.trim();
+    var done=function(){b.textContent='Copied';setTimeout(function(){b.textContent='Copy'},1600)};
+    var sel=function(){var r=document.createRange();r.selectNodeContents(el);var s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent='Selected'};
+    try{navigator.clipboard.writeText(txt).then(done,sel)}catch(e){sel()}
+  });
+});
+</script>
+
+</body>
+</html>
