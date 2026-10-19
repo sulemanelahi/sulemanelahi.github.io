@@ -144,7 +144,6 @@ section.block{padding-block:72px 8px}
 .lightbox .lb-zoom{position:absolute;bottom:12px;right:14px;display:flex;gap:6px;z-index:2}
 .lightbox .lb-zoom button{width:30px;height:30px;border-radius:50%;border:1px solid var(--line);background:color-mix(in srgb,var(--surface) 88%,transparent);color:var(--ink);font-size:.85rem;font-family:var(--f-mono);cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0}
 .lightbox .lb-zoom button:hover{border-color:var(--accent);color:var(--accent)}
-.lightbox .lb-zoom #lbZoomReset{width:auto;padding:0 8px;font-size:.68rem}
 .lightbox .lb-nav{position:absolute;top:50%;transform:translateY(-50%);width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:color-mix(in srgb,var(--surface) 88%,transparent);color:var(--ink);font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center}
 .lightbox .lb-nav:hover{border-color:var(--accent);color:var(--accent)}
 .lightbox .lb-prev{left:14px}
@@ -416,7 +415,6 @@ footer{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;color:
       <span class="lb-count" id="lbCount"></span>
       <div class="lb-zoom">
         <button type="button" id="lbZoomOut" aria-label="Zoom out">&#8722;</button>
-        <button type="button" id="lbZoomReset" aria-label="Reset zoom">1:1</button>
         <button type="button" id="lbZoomIn" aria-label="Zoom in">&#43;</button>
       </div>
     </div>
@@ -642,7 +640,6 @@ var PROJECTS = {
 
   document.getElementById('lbZoomIn').addEventListener('click', function(e){ e.stopPropagation(); zoomBy(ZOOM_STEP); });
   document.getElementById('lbZoomOut').addEventListener('click', function(e){ e.stopPropagation(); zoomBy(-ZOOM_STEP); });
-  document.getElementById('lbZoomReset').addEventListener('click', function(e){ e.stopPropagation(); resetZoom(); });
 
   lbStage.addEventListener('wheel', function(e){
     e.preventDefault();
